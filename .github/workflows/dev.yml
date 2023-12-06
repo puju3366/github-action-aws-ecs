@@ -23,12 +23,11 @@ jobs:
 
 
       - name: Docker Push
-      uses: actions/setup-docker@v2
- 
-      with:
-      context:
-      push: true
-      tags:
+        uses: actions/setup-docker@v2 
+        with:
+          context:
+          push: true
+          tags:
             puju3366/puju:latest
           
 
