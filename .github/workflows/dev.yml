@@ -12,6 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Confirm Pipeline
         run: |
           echo hello
+
+        
+      - name: Docker Build
+        run: |
+          docker build -t puju3366 .
+
