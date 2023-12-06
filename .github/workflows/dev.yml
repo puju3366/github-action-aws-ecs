@@ -1,5 +1,5 @@
-# .github/workflows/frontend-ci.yml
-name: Frontend CI/CD
+# .github/workflows/ci.yml
+name: Deploy to DockerHub
 
 on:
   push:
@@ -7,30 +7,21 @@ on:
       - main
       - dev
 
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    env:
-      DOCKER_REPOSITORY: puju3366
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Get Git SHA
-        id: git_sha
-        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
-
-      - name: Build Docker Image
-        run: docker build -t $DOCKER_REPOSITORY:${{ steps.git_sha.outputs.sha }} .
-
-      # Other steps...
-
       - name: Login to DockerHub
-        run: echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+        run: echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
-      # Conditional step to push Docker image
-      - name: Push Docker Image
-        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+      - name: Build and Push Docker Image
         run: |
-          docker push $DOCKER_REPOSITORY:${{ steps.git_sha.outputs.sha }}
+          docker build -t $DOCKERHUB_USERNAME/my-docker-image:${{ github.sha }} .
+          docker push $DOCKERHUB_USERNAME/my-docker-image:${{ github.sha }}
+
+      # Add other deployment steps...
