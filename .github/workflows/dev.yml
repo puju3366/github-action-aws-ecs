@@ -10,19 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Docker
-      uses: actions/setup-docker@v2
-      with:
-        dockerfile: ./Dockerfile  # Path to your Dockerfile
-
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: |
-          $DOCKER_REPOSITORY/front:latest
-          $DOCKER_REPOSITORY/front:${{ github.sha }}
+      
+      - name: Checkout
+        uses: actions/checkout@v4
