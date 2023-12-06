@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_REPOSITORY: puju3366
 
     steps:
       - name: Checkout Repository
