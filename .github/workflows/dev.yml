@@ -21,7 +21,6 @@ jobs:
 
       # Conditional Docker push step for the dev branch
       - name: Push Docker Image
-        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
         run: |
           echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
           docker push $DOCKERHUB_USERNAME/my-docker-image:${{ github.sha }}
