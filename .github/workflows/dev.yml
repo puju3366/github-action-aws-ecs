@@ -26,7 +26,7 @@ jobs:
       - name: Docker Push
         uses: docker/build-push-action@v2
         with:
-          context:
+          context: .
           push: true
           tags:
             puju3366/puju:latest
