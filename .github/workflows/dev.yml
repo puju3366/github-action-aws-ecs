@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Docker Build
-        run: docker build -t your-frontend-image .
+        run: docker build -t puju3366/chat .
 
       - name: Docker Login
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Docker Push
-        run: docker push your-frontend-image
+        run: docker push puju3366/chat
