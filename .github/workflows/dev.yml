@@ -19,4 +19,4 @@ jobs:
    
         
       - name: Docker Login
-        run: sudo echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin 
+        run: sudo echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USERNAME --password-stdin 
