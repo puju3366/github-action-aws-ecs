@@ -20,7 +20,7 @@ jobs:
         run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
 
       - name: Build Docker Image
-        run: docker build -t $DOCKER_REPOSITORY:${{ steps.git_sha.outputs.sha }} .
+        run: docker build -t ${{vars.DOCKER_REPOSITORY}}:${{ steps.git_sha.outputs.sha }} .
 
       # Other steps...
 
@@ -31,4 +31,4 @@ jobs:
       - name: Push Docker Image
         if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
         run: |
-          docker push $DOCKER_REPOSITORY:${{ steps.git_sha.outputs.sha }}
+          docker push ${{vars.DOCKER_REPOSITORY}}:${{ steps.git_sha.outputs.sha }}
