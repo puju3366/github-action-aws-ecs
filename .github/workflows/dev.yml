@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - dev
 
 jobs:
   deploy:
@@ -18,11 +17,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Create Docker Config Directory
+        run: mkdir -p ~/.docker
+
       - name: Login to DockerHub
         run: |
-          echo '{"auths":{"https://index.docker.io/v1/":{"auth":"'$(echo -n "$DOCKERHUB_USERNAME:$DOCKERHUB_TOKEN" | base64 --wrap=0)'"}}}' > ~/docker/config.json
+          echo '{"auths":{"https://index.docker.io/v1/":{"auth":"'$(echo -n "$DOCKERHUB_USERNAME:$DOCKERHUB_TOKEN" | base64 --wrap=0)'"}}}' > ~/.docker/config.json
           docker buildx create --use
-          docker login --config ~/docker --username "$DOCKERHUB_USERNAME" --password "$DOCKERHUB_TOKEN"
+          docker login --config ~/.docker --username "$DOCKERHUB_USERNAME" --password "$DOCKERHUB_TOKEN"
 
       - name: Build and Push Docker Image
         run: |
