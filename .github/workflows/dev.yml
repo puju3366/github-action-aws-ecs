@@ -17,13 +17,13 @@ jobs:
 
       # Additional Docker steps
       - name: Build Docker Image
-        run: docker build -t $DOCKERHUB_USERNAME/my-docker-image:${{ github.sha }}
+        run: docker build -t $DOCKERHUB_USERNAME/my-docker-image
 
       # Conditional Docker push step for the dev branch
       - name: Push Docker Image
         run: |
           echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
-          docker push $DOCKERHUB_USERNAME/my-docker-image:${{ github.sha }}
+          docker push $DOCKERHUB_USERNAME/my-docker-image
 
 
       # Add other steps specific to your CI process
