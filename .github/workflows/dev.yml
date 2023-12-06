@@ -14,11 +14,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-
-
-   
-        
-    
       - uses: actions/checkout@v1
       - name: Login to DockerHub Registry
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - uses: actions/checkout@v1
+      - name: Docker Build
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }} .
+          
