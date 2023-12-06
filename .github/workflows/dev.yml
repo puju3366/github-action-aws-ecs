@@ -16,7 +16,7 @@ jobs:
     - name: Set up Docker
       uses: actions/setup-docker@v2
       with:
-        dockerfile: Dockerfile  # Path to your Dockerfile
+        dockerfile: ./Dockerfile  # Path to your Dockerfile
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
