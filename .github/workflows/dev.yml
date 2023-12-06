@@ -19,7 +19,7 @@ jobs:
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - uses: actions/checkout@v1
-      - name: Docker Build
+      - name: Docker Build & Docker Push
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }} .
-          
+          docker push ${{ secrets.DOCKER_USERNAME }}
