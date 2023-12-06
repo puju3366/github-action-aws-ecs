@@ -18,5 +18,7 @@ jobs:
 
    
         
-      - name: Docker Login
-        run: sudo echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USERNAME --password-stdin 
+     steps:
+       - uses: actions/checkout@v1
+       - name: Login to DockerHub Registry
+         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
