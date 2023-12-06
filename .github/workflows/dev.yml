@@ -23,3 +23,16 @@ jobs:
         run: |
           docker build -t puju3366/front .
           docker push puju3366/front
+
+
+      - name: SSH and Docker
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+              # Run Docker commands on the remote server
+              docker pull puju3366/front
+              docker run -d -p 3000:3000 puju3366/front
