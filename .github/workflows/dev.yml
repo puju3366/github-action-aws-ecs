@@ -14,11 +14,37 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Docker Build
-        run: docker build -t puju3366/chat .
+# .github/workflows/ci.yml
+name: Combined CI
 
-      - name: Docker Login
-        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+on:
+  push:
+    branches:
+      - main
+      - dev
 
-      - name: Docker Push
-        run: docker push puju3366/chat
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get Git SHA
+        id: git_sha
+        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+
+      - name: Build Docker Image
+        run: docker build -t $DOCKER_REPOSITORY:${{ steps.git_sha.outputs.sha }} .
+
+      # Other steps...
+
+      - name: Login to DockerHub
+        run: echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+
+      # Conditional step to push Docker image
+      - name: Push Docker Image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        run: |
+          docker push $DOCKER_REPOSITORY:${{ steps.git_sha.outputs.sha }}
