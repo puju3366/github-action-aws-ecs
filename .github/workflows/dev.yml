@@ -12,12 +12,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Confirm Pipeline
-        run: |
-          echo hello
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-        
+
       - name: Docker Build
-        run: |
-          docker build -t puju3366 .
+        uses: actions/docker-build@2
+        with:
+          dockerfile: Dockerfile
+
+
+      - name: Docker Push
+        uses: docker/docker-push@2  
+        with:
+          context:
+          push: true
+          tags:
+            $DOCKER_USERNAME/puju:latest
+          
 
