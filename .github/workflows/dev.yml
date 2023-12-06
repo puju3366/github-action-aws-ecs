@@ -1,34 +1,30 @@
 # .github/workflows/ci.yml
-name: Deploy to DockerHub
+name: Frontend
 
 on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      # Additional Docker steps
+      - name: Build Docker Image
+        run: docker build -t $DOCKERHUB_USERNAME/my-docker-image:${{ github.sha }}
 
-      - name: Create Docker Config Directory
-        run: mkdir -p ~/.docker
-
-      - name: Login to DockerHub
+      # Conditional Docker push step for the dev branch
+      - name: Push Docker Image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
         run: |
-          echo '{"auths":{"https://index.docker.io/v1/":{"auth":"'$(echo -n "$DOCKERHUB_USERNAME:$DOCKERHUB_TOKEN" | base64 --wrap=0)'"}}}' > ~/.docker/config.json
-          docker buildx create --use
-          docker login --config ~/.docker --username "$DOCKERHUB_USERNAME" --password "$DOCKERHUB_TOKEN"
-
-      - name: Build and Push Docker Image
-        run: |
-          docker buildx build -t $DOCKERHUB_USERNAME/my-docker-image:${{ github.sha }} .
+          echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
           docker push $DOCKERHUB_USERNAME/my-docker-image:${{ github.sha }}
 
-      # Add other deployment steps...
+
+      # Add other steps specific to your CI process
